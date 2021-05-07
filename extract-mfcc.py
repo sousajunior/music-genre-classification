@@ -12,7 +12,8 @@ SAMPLE_RATE = 22050
 # Testar:
 #   Alterar o num_segments para 10 ou algo > que 5
 
-def create_mfcc_features_file(dataset_path, num_mfcc=13, n_fft=1024, hop_length=512, num_segments=5, track_duration=30):
+
+def create_mfcc_features_file(dataset_path, num_mfcc=13, n_fft=2048, hop_length=512, num_segments=5, track_duration=30):
     """Extracts MFCCs from music dataset and saves them into a json file along witgh genre labels.
         :param dataset_path (str): Caminho onde se encontram os dados
         :param num_mfcc (int): Número de coeficientes MFCCs para extrair
@@ -83,7 +84,6 @@ def create_mfcc_features_file(dataset_path, num_mfcc=13, n_fft=1024, hop_length=
                         print("{}, segmento:{}".format(
                             file_path, segment_index+1))
 
-
     # nome do arquivo a ser criado para guardar as características extraídas
     json_path = f"extracted_data_with_{num_segments}_segments_and_{track_duration}_sec.json"
 
@@ -107,4 +107,4 @@ if __name__ == "__main__":
     # create_mfcc_features_file(DATASET_PATH, num_segments=15, track_duration=30)
 
     # Comentar a chamada abaixo caso descomente as chamadas acima
-    create_mfcc_features_file(DATASET_PATH, num_segments=5, track_duration=30)
+    create_mfcc_features_file(DATASET_PATH, num_segments=10, track_duration=30)
