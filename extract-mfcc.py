@@ -14,12 +14,12 @@ SAMPLE_RATE = 22050
 
 def create_mfcc_features_file(dataset_path, num_mfcc=13, n_fft=1024, hop_length=512, num_segments=5, track_duration=30):
     """Extracts MFCCs from music dataset and saves them into a json file along witgh genre labels.
-        :param dataset_path (str): Path to dataset
-        :param num_mfcc (int): Number of coefficients to extract
-        :param n_fft (int): Interval we consider to apply FFT. Measured in # of samples
-        :param hop_length (int): Sliding window for FFT. Measured in # of samples
-        :param: num_segments (int): Number of segments we want to divide sample tracks into
-        :param: track_duration (int): Number of track duration in seconds
+        :param dataset_path (str): Caminho onde se encontram os dados
+        :param num_mfcc (int): Número de coeficientes MFCCs para extrair
+        :param n_fft (int): Intervalo a considerar para aplicar a FFT. Medido em # de amostras
+        :param hop_length (int): Janela deslizante para FFT. Medido em # de amostras
+        :param: num_segments (int): Número de segmentos no qual cada amostra da música será dividida
+        :param: track_duration (int): Número de duração da música em segundos
         """
 
     print("Extração das características mfcc inicializada...")
@@ -42,8 +42,11 @@ def create_mfcc_features_file(dataset_path, num_mfcc=13, n_fft=1024, hop_length=
         # garante que estamos processando uma sub pasta no nível de gênero
         if dirpath is not dataset_path:
 
-            # genre/blues => ["genre", "blues"]
-            semantic_label = dirpath.split("/")[-1]
+            # genre\blues => ["genre", "blues"]
+            # obtém o nome do genêro pelo caminho do arquivo
+            # está utilizando o padrão de caminhos do windows
+            semantic_label = dirpath.split('\\')[-1]
+
             # salva o nome do gênero na estrutura de mapping
             data["mapping"].append(semantic_label)
             print("\nProcessando: {}".format(semantic_label))
