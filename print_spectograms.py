@@ -5,7 +5,7 @@ import librosa.display
 
 
 def print_spectograms(file_path):
-    y, sr = librosa.load(file_path, duration=15)
+    y, sr = librosa.load(file_path, duration=15, sr=22050)
     D = librosa.stft(y)
     S_db = librosa.amplitude_to_db(np.abs(D), ref=np.max)
     fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True)
