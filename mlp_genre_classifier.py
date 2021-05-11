@@ -51,16 +51,16 @@ if __name__ == '__main__':
     # imprime um resumo da rede criada
     model.summary()
 
-    # treinar a rede
+    # treina a rede
     history = model.fit(
         inputs_train,
         targets_train,
         validation_data=(inputs_test, targets_test),
-        epochs=2,
+        epochs=150,
         batch_size=32  # (16 - 128)
     )
 
-    # imprime a acurácia e o erro em cada época
+    # imprime um gráfico com o histórico do desempenho da rede
     plot_history(history)
 
     model.save("mlp_genre_classifier.h5")
