@@ -1,34 +1,13 @@
 from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
-import matplotlib.pyplot as plt
+from plot_history import plot_history
 
-DATA_SET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
-
-
-def plot_history(history):
-    _, axs = plt.subplots(2)
-
-    # cria o subplot da acurácia
-    axs[0].plot(history.history["accuracy"], label="train accuracy")
-    axs[0].plot(history.history["val_accuracy"], label="test accuracy")
-    axs[0].set_ylabel("Accuracy")
-    axs[0].legend(loc="lower right")
-    axs[0].set_title("Accuracy eval")
-
-    # cria o subplot do erro
-    axs[1].plot(history.history["loss"], label="train error")
-    axs[1].plot(history.history["val_loss"], label="test error")
-    axs[1].set_ylabel("Error")
-    axs[1].set_xlabel("Epoch")
-    axs[1].legend(loc="upper right")
-    axs[1].set_title("Error eval")
-
-    plt.show()
+DATASET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
 
 
 if __name__ == '__main__':
-    inputs, targets = load_data(DATA_SET_PATH)
+    inputs, targets = load_data(DATASET_PATH)
 
     # separando os dados para testar e treinar
     inputs_train, inputs_test, targets_train, targets_test = train_test_split(
@@ -77,9 +56,11 @@ if __name__ == '__main__':
         inputs_train,
         targets_train,
         validation_data=(inputs_test, targets_test),
-        epochs=150,
+        epochs=2,
         batch_size=32  # (16 - 128)
     )
 
     # imprime a acurácia e o erro em cada época
     plot_history(history)
+
+    model.save("mlp_genre_classifier.h5")
