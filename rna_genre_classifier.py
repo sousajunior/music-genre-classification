@@ -1,26 +1,9 @@
-import json
-import numpy as np
+from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 import matplotlib.pyplot as plt
 
 DATA_SET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
-
-
-def load_data(dataset_path):
-    print(f"Carregando o arquivo {dataset_path}")
-
-    # abre o arquivo com os dados
-    with open(dataset_path, 'r') as fp:
-        data = json.load(fp)
-
-        # converte as listas em um array numpy
-        inputs = np.array(data['mfcc'])
-        targets = np.array(data['labels'])
-
-        print("Arquivo carregado com sucesso!")
-
-        return inputs, targets
 
 
 def plot_history(history):
