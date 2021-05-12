@@ -1,7 +1,10 @@
 import os
+from consolemenu.console_menu import clear_terminal
 import numpy as np
 from extract_mfcc_of_one_music import extract_mfcc_of_one_music
 from tensorflow.keras.models import load_model
+from consolemenu import ConsoleMenu, SelectionMenu
+from consolemenu.items import MenuItem
 import warnings
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -21,6 +24,10 @@ def predict_genre(music_file_path, network_type='mlp'):
 
     # carrega a rede com o model type correspondente
     model = load_model(f'{network_type}_genre_classifier.h5')
+
+    # limpa os warnings que aparecem relacionados a GPU
+    clear_terminal()
+
     X = extract_mfcc_of_one_music(music_file_path)
 
     X = X[np.newaxis, ...]
@@ -42,21 +49,53 @@ def predict_genre(music_file_path, network_type='mlp'):
 
 
 if __name__ == '__main__':
-    while(True):
-        music_file_path = input(
-            "Insira o caminho da música que você quer descobrir o gênero:")
+        menu_title = "Classificador automático de gêneros músicais"
+        menu_subtitle = "Criado por: Carlinhos de Sousa Junior"
+        network_types = ["mlp", "cnn", "rnn"]
+        # obtém uma lista com todas as músicas dentro do diretório /songs
+        musics = os.listdir('songs')
 
-        network_type = input(
-            "Qual o tipo de RNA que você deseja usar ? (mlp, cnn, rnn):")
+        network_selection_menu = SelectionMenu(
+            network_types,
+            title=menu_title,
+            subtitle=menu_subtitle,
+            prologue_text="Para iniciar escolha uma das opções de redes neurais do menu abaixo:"
+        )
 
-        print('Certo, bora analisar sua música então...')
+        # exibe o menu para seleção do algoritmo a ser utilizado
+        network_selection_menu.show()
 
+        music_selection_menu = SelectionMenu(
+            musics,
+            title=menu_title,
+            subtitle=menu_subtitle,
+            prologue_text="Certo, agora você precisa escolher uma das músicas abaixo para que o classificador tente adivinhar qual o gênero dela:",
+        )
+
+        # exibe o menu para seleção da música a ser analisada
+        music_selection_menu.show()
+
+        selected_network = network_types[network_selection_menu.selected_option]
+        selected_music = musics[music_selection_menu.selected_option]
+
+        # faz a previsão dos gêneros que possuem semelhança com a música selecionada
         predicted_genres = predict_genre(
-            music_file_path, network_type=network_type)
+            f"songs/{selected_music}",
+            network_type=selected_network
+        )
 
-        print(
-            f"Os três gêneros que mais se identificam com {music_file_path} são: ")
+        result_menu = ConsoleMenu(
+            title=menu_title,
+            subtitle=menu_subtitle,
+            prologue_text="De acordo com o algoritmo de '{}', a música '{}' tem similaridade com os seguintes gêneros:".format(
+                selected_network, selected_music)
+        )
 
-        for index, predicted_genre in enumerate(predicted_genres, start=1):
-            print("[{}] - Gênero: {}, Precisão: {:.2f}%".format(
-                index, predicted_genre['label'], predicted_genre['accuracy']))
+        # cria os itens do menu de resultados obtidos pela previsão
+        for predicted_genre in predicted_genres:
+            result_menu.append_item(MenuItem("Gênero: {}, Precisão: {:.2f}%".format(
+                predicted_genre['label'], predicted_genre['accuracy'])))
+
+        # result_menu.append_item()
+
+        result_menu.show()
