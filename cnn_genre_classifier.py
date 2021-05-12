@@ -3,7 +3,6 @@ from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from plot_history import plot_history
-from predict_genre import predict_genre
 
 DATASET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
 
@@ -105,13 +104,8 @@ if __name__ == '__main__':
     # avalia o desempenho da rede com os dados de teste
     test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=1)
 
-    print("A acurácia no teste é de: {}".format(test_accuracy))
-    print("O erro no teste é de: {}".format(test_error))
+    print("A taxa de precisão no teste é de: {:.2f}%".format(test_accuracy))
+    print("O taxa de erro no teste é de: {:.2f}%".format(test_error))
 
+    # salva o modelo da rede treinada em um arquivo
     model.save("cnn_genre_classifier.h5")
-
-    # TODO: precisa ajustar o mecanismo de predição...
-    # - Pegar uma música, extrair os dados dela, obter o gênero e enviar pra predição
-    # X = X_test[100]
-    # y = y_test[100]
-    # predict_genre(model, X, y)
