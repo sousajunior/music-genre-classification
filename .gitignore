@@ -2,5 +2,6 @@
 *.json
 *.mp3
 *.m4a
+*.webm
 *.cache
 *__pycache__
