@@ -61,7 +61,6 @@ def extract_mfcc_of_one_music(music_file_path, num_mfcc=13, n_fft=2048, hop_leng
 
     # faz umas transformações para ajustar os dados
     inputs = np.array(data['mfcc'])
-    inputs = inputs[..., np.newaxis]
 
     print("Características da música extraídas com sucesso!")
 

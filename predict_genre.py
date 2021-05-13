@@ -30,6 +30,8 @@ def predict_genre(music_file_path, network_type='mlp'):
 
     X = extract_mfcc_of_one_music(music_file_path)
 
+    # não adiciona a terceira dimensão no array quando a rede é do tipo RNN
+    if network_type != 'rnn': X = X[..., np.newaxis]
     X = X[np.newaxis, ...]
     prediction = model.predict(X)
 
