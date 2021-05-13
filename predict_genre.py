@@ -51,6 +51,7 @@ def predict_genre(music_file_path, network_type='mlp'):
 
 
 if __name__ == '__main__':
+    while True:
         menu_title = "Classificador automático de gêneros músicais"
         menu_subtitle = "Criado por: Carlinhos de Sousa Junior"
         network_types = ["mlp", "cnn", "rnn"]
@@ -97,7 +98,5 @@ if __name__ == '__main__':
         for predicted_genre in predicted_genres:
             result_menu.append_item(MenuItem("Gênero: {}, Precisão: {:.2f}%".format(
                 predicted_genre['label'], predicted_genre['accuracy'])))
-
-        # result_menu.append_item()
 
         result_menu.show()
