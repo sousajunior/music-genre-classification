@@ -3,7 +3,7 @@ import os
 import math
 import librosa
 import numpy as np
-from settings import DATASET_PATH, SAMPLE_RATE
+from settings import SAMPLE_RATE
 
 
 def extract_mfcc_from_one_song(music_file_path, num_mfcc=13, n_fft=2048, hop_length=512, num_segments=10, track_duration=30):
@@ -143,18 +143,3 @@ def extract_mfcc_from_multiple_songs(dataset_path, num_mfcc=13, n_fft=2048, hop_
         json.dump(data, fp, indent=4)
 
     print("Extração das características mfcc finalizada!")
-
-
-# if __name__ == "__main__":
-    # Descomentar as chamadas abaixo para criar todos os arquivos necessários para o projeto
-
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=5, track_duration=10)
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=5, track_duration=30)
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=10, track_duration=10)
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=10, track_duration=30)
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=15, track_duration=10)
-    # extract_mfcc_from_multiple_songs(DATASET_PATH, num_segments=15, track_duration=30)
-
-    # Comentar a chamada abaixo caso descomente as chamadas acima
-    extract_mfcc_from_multiple_songs(
-        DATASET_PATH, num_segments=10, track_duration=30)
