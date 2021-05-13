@@ -1,7 +1,7 @@
 import os
 from consolemenu.console_menu import clear_terminal
 import numpy as np
-from extract_mfcc_of_one_music import extract_mfcc_of_one_music
+from song_features_extractor import extract_mfcc_from_one_song
 from tensorflow.keras.models import load_model
 from consolemenu import ConsoleMenu, SelectionMenu
 from consolemenu.items import MenuItem
@@ -28,7 +28,7 @@ def predict_genre(music_file_path, network_type='mlp'):
     # limpa os warnings que aparecem relacionados a GPU
     clear_terminal()
 
-    X = extract_mfcc_of_one_music(music_file_path)
+    X = extract_mfcc_from_one_song(music_file_path)
 
     # não adiciona a terceira dimensão no array quando a rede é do tipo RNN
     if network_type != 'rnn': X = X[..., np.newaxis]
