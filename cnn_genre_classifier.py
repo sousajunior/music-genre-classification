@@ -3,9 +3,7 @@ from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from plot_history import plot_history
-
-DATASET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
-
+from settings import DATASET_PATH
 
 def prepare_datasets(test_size=None, validation_size=None):
     """Carrega os dados e os divide em treinamento, validação e teste.
@@ -36,6 +34,87 @@ def prepare_datasets(test_size=None, validation_size=None):
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
+# cnn_genre_classifier_2.h5 - acc: 0.89% %, erro: 0.39%
+# def build_model(input_shape):
+#     """Gera um modelo de rede CNN
+#     :param input_shape (tuple): Dados de entrada da rede
+#     :return model: Modelo da CNN
+#     """
+
+#     # cria a topologia da rede
+#     model = keras.Sequential()
+
+#     # 1ª camada de convolução
+#     model.add(keras.layers.Conv2D(
+#         32, (3, 3), activation='relu', input_shape=input_shape))
+#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+
+#     # 2ª camada de convolução
+#     model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
+#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+
+#     # 3ª camada de convolução
+#     model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
+#     model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+
+#     # nivela a saída e a coloca em uma camada densa
+#     model.add(keras.layers.Flatten())
+#     model.add(keras.layers.Dense(64, activation='relu'))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # camada de saída
+#     model.add(keras.layers.Dense(10, activation='softmax'))
+
+#     return model
+
+
+# cnn_genre_classifier_1 - acc: 0.78 %, erro: 0.64%
+# def build_model(input_shape):
+#     """Gera um modelo de rede CNN
+#     :param input_shape (tuple): Dados de entrada da rede
+#     :return model: Modelo da CNN
+#     """
+
+#     # cria a topologia da rede
+#     model = keras.Sequential()
+
+#     # 1ª camada de convolução
+#     model.add(keras.layers.Conv2D(
+#         32, (3, 3), activation='relu', input_shape=input_shape))
+#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+
+#     # 2ª camada de convolução
+#     model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
+#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # 3ª camada de convolução
+#     model.add(keras.layers.Conv2D(64, (2, 2), activation='relu'))
+#     model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+#     model.add(keras.layers.Dropout(0.3))
+
+#     model.add(keras.layers.Conv2D(128, (1, 1), activation='relu'))
+#     model.add(keras.layers.MaxPool2D((1, 1), strides=(2, 2), padding='same'))
+#     model.add(keras.layers.BatchNormalization())
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # nivela a saída e a coloca em uma camada densa
+#     model.add(keras.layers.Flatten())
+#     model.add(keras.layers.Dense(256, activation='relu'))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # camada de saída
+#     model.add(keras.layers.Dense(10, activation='softmax'))
+
+#     return model
+
+# cnn_genre_classifier.h5 - acc: 0.75%, erro: 0.77%
 def build_model(input_shape):
     """Gera um modelo de rede CNN
     :param input_shape (tuple): Dados de entrada da rede
@@ -55,15 +134,17 @@ def build_model(input_shape):
     model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
     model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
 
     # 3ª camada de convolução
-    model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
+    model.add(keras.layers.Conv2D(64, (2, 2), activation='relu'))
     model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding='same'))
     model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
 
     # nivela a saída e a coloca em uma camada densa
     model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(64, activation='relu'))
+    model.add(keras.layers.Dense(128, activation='relu'))
     model.add(keras.layers.Dropout(0.3))
 
     # camada de saída
@@ -94,7 +175,7 @@ if __name__ == '__main__':
         X_train,
         y_train,
         validation_data=(X_validation, y_validation),
-        batch_size=128, # era 32, mudei pra 128 para testar
+        batch_size=128,  # era 32, mudei pra 128 para testar
         epochs=150
     )
 
