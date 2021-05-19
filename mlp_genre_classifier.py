@@ -2,7 +2,7 @@ from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from plot_history import plot_history
-from settings import DATASET_PATH
+from settings import TRAIN_DATASET_PATH
 
 
 def prepare_datasets(test_size=None, validation_size=None):
@@ -18,7 +18,7 @@ def prepare_datasets(test_size=None, validation_size=None):
     """
 
     # carrega o arquivo com as features extraídas das músicas
-    X, y = load_data(DATASET_PATH)
+    X, y = load_data(TRAIN_DATASET_PATH)
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
