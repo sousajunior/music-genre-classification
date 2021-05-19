@@ -1,17 +1,19 @@
-# directory with all musics tracks of GTZAN
+# TODO: Revisar essas configurações no final
+
+# diretório com todas as músicas do GTZAN
 GTZAN_DIRECTORY = "genres"
 
 # directory with all musics tracks to train
-# TEST_MUSICS_DIRECTORY = "test"
+TEST_MUSICS_DIRECTORY = "test"
 
-# default sample rate of GTZAN tracks
+# taxa de amostragem padrão das músicas da base GTZAN
 SAMPLE_RATE = 22050
 
-# train dataset file name
+# nome do arquivo que contém os dados (features) das músicas
 TRAIN_DATASET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
 
-# teste dataset file name
-# TEST_DATASET_PATH = "extracted_data_with_10_segments_and_30_sec_test.json"
+# número a ser usado no "train_test_split" para manter o mesmo shuffle para todas as chamadas
+RANDOM_STATE = 4
 
-# Testar:
-#   Alterar o num_segments para 10 ou algo > que 5
+# teste dataset file name
+TEST_DATASET_PATH = "extracted_data_with_10_segments_and_30_sec_test.json"

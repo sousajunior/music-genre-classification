@@ -3,7 +3,7 @@ from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from plot_history import plot_history
-from settings import TRAIN_DATASET_PATH
+from settings import TRAIN_DATASET_PATH, RANDOM_STATE
 
 def prepare_datasets(test_size=None, validation_size=None):
     """Carrega os dados e os divide em treinamento, validação e teste.
@@ -22,9 +22,9 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size)
+        X, y, test_size=test_size, random_state=RANDOM_STATE)
     X_train, X_validation, y_train, y_validation = train_test_split(
-        X_train, y_train, test_size=validation_size)
+        X_train, y_train, test_size=validation_size, random_state=RANDOM_STATE)
 
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
@@ -83,6 +83,37 @@ def prepare_datasets(test_size=None, validation_size=None):
 #     return model
 
 # rnn_genre_classifier_2.h5 - acc: 0.89%, erro: 0.48%
+# def build_model(input_shape):
+#     """Gera um modelo de rede RNN-LSTM
+#     :param input_shape (tuple): Dados de entrada da rede
+#     :return model: Modelo da RNN
+#     """
+
+#     # cria a topologia da rede
+#     model = keras.Sequential()
+
+#     # 1ª camada LSTM
+#     model.add(keras.layers.LSTM(
+#         64, input_shape=input_shape, return_sequences=True))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # 2ª camada LSTM
+#     model.add(keras.layers.LSTM(128, return_sequences=True))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     model.add(keras.layers.LSTM(256))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # camada densa + dropout pra evitar o overfitting
+#     model.add(keras.layers.Dense(64, activation='relu'))
+#     model.add(keras.layers.Dropout(0.3))
+
+#     # camada de saída
+#     model.add(keras.layers.Dense(10, activation='softmax'))
+
+#     return model
+
+# rnn_genre_classifier_3.h5 - acc: 0.73%, erro: 1.20%
 def build_model(input_shape):
     """Gera um modelo de rede RNN-LSTM
     :param input_shape (tuple): Dados de entrada da rede
@@ -104,15 +135,25 @@ def build_model(input_shape):
     model.add(keras.layers.LSTM(256))
     model.add(keras.layers.Dropout(0.3))
 
-    # camada densa + dropout pra evitar o overfitting
-    model.add(keras.layers.Dense(64, activation='relu'))
-    model.add(keras.layers.Dropout(0.3))
+    # 1ª camada oculta
+    keras.layers.Dense(512, activation="relu",
+                       kernel_regularizer=keras.regularizers.l2(0.001)),
+    keras.layers.Dropout(0.3),
+
+    # 2ª camada oculta
+    keras.layers.Dense(256, activation="relu",
+                       kernel_regularizer=keras.regularizers.l2(0.001)),
+    keras.layers.Dropout(0.3),
+
+    # 3ª camada oculta
+    keras.layers.Dense(64, activation="relu",
+                       kernel_regularizer=keras.regularizers.l2(0.001)),
+    keras.layers.Dropout(0.3),
 
     # camada de saída
     model.add(keras.layers.Dense(10, activation='softmax'))
 
     return model
-
 
 if __name__ == '__main__':
     # obtém os dados de treinamento, validação e teste

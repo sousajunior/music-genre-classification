@@ -3,7 +3,7 @@ from load_data import load_data
 from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 from plot_history import plot_history
-from settings import TRAIN_DATASET_PATH
+from settings import TRAIN_DATASET_PATH, RANDOM_STATE
 
 def prepare_datasets(test_size=None, validation_size=None):
     """Carrega os dados e os divide em treinamento, validação e teste.
@@ -22,9 +22,9 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size)
+        X, y, test_size=test_size, random_state=RANDOM_STATE)
     X_train, X_validation, y_train, y_validation = train_test_split(
-        X_train, y_train, test_size=validation_size)
+        X_train, y_train, test_size=validation_size, random_state=RANDOM_STATE)
 
     # adiciona um novo eixo aos dados
     X_train = X_train[..., np.newaxis]
