@@ -62,7 +62,7 @@ def extract_mfcc_from_one_song(music_file_path, num_mfcc=13, n_fft=2048, hop_len
     return inputs[num_segments-1]
 
 
-def extract_mfcc_from_multiple_songs(dataset_path, num_mfcc=13, n_fft=2048, hop_length=512, num_segments=10, track_duration=30):
+def extract_mfcc_from_multiple_songs(dataset_path, num_mfcc=13, n_fft=2048, hop_length=512, num_segments=10, track_duration=30, suffix=''):
     """Extracts MFCCs from music dataset and saves them into a json file along witgh genre labels.
         :param dataset_path (str): Caminho onde se encontram os dados
         :param num_mfcc (int): Número de coeficientes MFCCs para extrair
@@ -134,7 +134,7 @@ def extract_mfcc_from_multiple_songs(dataset_path, num_mfcc=13, n_fft=2048, hop_
                             file_path, segment_index+1))
 
     # nome do arquivo a ser criado para guardar as características extraídas
-    json_path = f"extracted_data_with_{num_segments}_segments_and_{track_duration}_sec.json"
+    json_path = f"extracted_data_with_{num_segments}_segments_and_{track_duration}_sec{suffix}.json"
 
     print("\nSalvando os dados como: {}".format(json_path))
 

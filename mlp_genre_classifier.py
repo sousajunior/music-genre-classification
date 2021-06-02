@@ -22,14 +22,45 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=RANDOM_STATE)
+        X, y, test_size=test_size, stratify=y, random_state=RANDOM_STATE)
     X_train, X_validation, y_train, y_validation = train_test_split(
-        X_train, y_train, test_size=validation_size, random_state=RANDOM_STATE)
+        X_train, y_train, test_size=validation_size, stratify=y_train, random_state=RANDOM_STATE)
 
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
-# mlp_genre_classifier.h5 - acc: 0.59%, erro: 1.88%
+# mlp_genre_classifier.h5 - acc: 0.66%, erro: 1.61%
+def buid_model(input_shape):
+    """Gera um modelo de rede MLP
+    :param input_shape (tuple): Dados de entrada da rede
+    :return model: Modelo da MLP
+    """
+
+    model = keras.Sequential([
+        # camada de entrada
+        keras.layers.Flatten(input_shape=input_shape),
+
+        # 1ª camada oculta
+        keras.layers.Dense(512, activation="relu",
+                            kernel_regularizer=keras.regularizers.l2(0.001)),
+        keras.layers.Dropout(0.3),
+
+        # 2ª camada oculta
+        keras.layers.Dense(256, activation="relu",
+                            kernel_regularizer=keras.regularizers.l2(0.001)),
+        keras.layers.Dropout(0.3),
+
+        # 3ª camada oculta
+        keras.layers.Dense(64, activation="relu",
+                            kernel_regularizer=keras.regularizers.l2(0.001)),
+        keras.layers.Dropout(0.3),
+
+        # camada de saída
+        keras.layers.Dense(10, activation="softmax")
+    ])
+
+    return model
+
 if __name__ == '__main__':
     # obtém os dados de treinamento, validação e teste
     X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_datasets(
@@ -37,29 +68,8 @@ if __name__ == '__main__':
 
     input_shape = (X_train.shape[1], X_train.shape[2])
 
-    # construindo a arquitetura da rede neural
-    model = keras.Sequential([
-        # camada de entrada
-        keras.layers.Flatten(input_shape=input_shape),
-
-        # 1ª camada oculta
-        keras.layers.Dense(512, activation="relu",
-                           kernel_regularizer=keras.regularizers.l2(0.001)),
-        keras.layers.Dropout(0.3),
-
-        # 2ª camada oculta
-        keras.layers.Dense(256, activation="relu",
-                           kernel_regularizer=keras.regularizers.l2(0.001)),
-        keras.layers.Dropout(0.3),
-
-        # 3ª camada oculta
-        keras.layers.Dense(64, activation="relu",
-                           kernel_regularizer=keras.regularizers.l2(0.001)),
-        keras.layers.Dropout(0.3),
-
-        # camada de saída
-        keras.layers.Dense(10, activation="softmax")
-    ])
+    # cria a rede
+    model = buid_model(input_shape)
 
     # compilar a rede
     optimizer = keras.optimizers.Adam(learning_rate=0.0001)
@@ -88,6 +98,6 @@ if __name__ == '__main__':
     test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=1)
 
     print("A taxa de precisão no teste é de: {:.2f}%".format(test_accuracy))
-    print("O taxa de erro no teste é de: {:.2f}%".format(test_error))
+    print("A taxa de erro no teste é de: {:.2f}%".format(test_error))
 
     model.save("mlp_genre_classifier.h5")

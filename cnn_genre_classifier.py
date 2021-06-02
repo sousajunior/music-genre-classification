@@ -22,9 +22,14 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=RANDOM_STATE)
+        X, y, test_size=test_size, stratify=y, random_state=RANDOM_STATE)
     X_train, X_validation, y_train, y_validation = train_test_split(
-        X_train, y_train, test_size=validation_size, random_state=RANDOM_STATE)
+        X_train, y_train, test_size=validation_size, stratify=y_train, random_state=RANDOM_STATE)
+
+    print(f"Dimensions: {X_train.ndim}")
+    print(f"Size: {X_train.size}")
+    print(f"Length: {len(X_train)}")
+    print(f"Shape: {X_train.shape}")
 
     # adiciona um novo eixo aos dados
     X_train = X_train[..., np.newaxis]
@@ -33,88 +38,7 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
-
-# cnn_genre_classifier_2.h5 - acc: 0.89% %, erro: 0.39%
-# def build_model(input_shape):
-#     """Gera um modelo de rede CNN
-#     :param input_shape (tuple): Dados de entrada da rede
-#     :return model: Modelo da CNN
-#     """
-
-#     # cria a topologia da rede
-#     model = keras.Sequential()
-
-#     # 1ª camada de convolução
-#     model.add(keras.layers.Conv2D(
-#         32, (3, 3), activation='relu', input_shape=input_shape))
-#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-
-#     # 2ª camada de convolução
-#     model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
-#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-
-#     # 3ª camada de convolução
-#     model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
-#     model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-
-#     # nivela a saída e a coloca em uma camada densa
-#     model.add(keras.layers.Flatten())
-#     model.add(keras.layers.Dense(64, activation='relu'))
-#     model.add(keras.layers.Dropout(0.3))
-
-#     # camada de saída
-#     model.add(keras.layers.Dense(10, activation='softmax'))
-
-#     return model
-
-
-# cnn_genre_classifier_1 - acc: 0.78 %, erro: 0.64%
-# def build_model(input_shape):
-#     """Gera um modelo de rede CNN
-#     :param input_shape (tuple): Dados de entrada da rede
-#     :return model: Modelo da CNN
-#     """
-
-#     # cria a topologia da rede
-#     model = keras.Sequential()
-
-#     # 1ª camada de convolução
-#     model.add(keras.layers.Conv2D(
-#         32, (3, 3), activation='relu', input_shape=input_shape))
-#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-
-#     # 2ª camada de convolução
-#     model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
-#     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-#     model.add(keras.layers.Dropout(0.3))
-
-#     # 3ª camada de convolução
-#     model.add(keras.layers.Conv2D(64, (2, 2), activation='relu'))
-#     model.add(keras.layers.MaxPool2D((2, 2), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-#     model.add(keras.layers.Dropout(0.3))
-
-#     model.add(keras.layers.Conv2D(128, (1, 1), activation='relu'))
-#     model.add(keras.layers.MaxPool2D((1, 1), strides=(2, 2), padding='same'))
-#     model.add(keras.layers.BatchNormalization())
-#     model.add(keras.layers.Dropout(0.3))
-
-#     # nivela a saída e a coloca em uma camada densa
-#     model.add(keras.layers.Flatten())
-#     model.add(keras.layers.Dense(256, activation='relu'))
-#     model.add(keras.layers.Dropout(0.3))
-
-#     # camada de saída
-#     model.add(keras.layers.Dense(10, activation='softmax'))
-
-#     return model
-
-# cnn_genre_classifier.h5 - acc: 0.75%, erro: 0.77%
+# cnn_genre_classifier - acc: 0.79%, erro: 0.64% 15 segmentos
 def build_model(input_shape):
     """Gera um modelo de rede CNN
     :param input_shape (tuple): Dados de entrada da rede
@@ -125,8 +49,7 @@ def build_model(input_shape):
     model = keras.Sequential()
 
     # 1ª camada de convolução
-    model.add(keras.layers.Conv2D(
-        32, (3, 3), activation='relu', input_shape=input_shape))
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
     model.add(keras.layers.MaxPool2D((3, 3), strides=(2, 2), padding='same'))
     model.add(keras.layers.BatchNormalization())
 
@@ -162,6 +85,11 @@ if __name__ == '__main__':
     input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3])
     model = build_model(input_shape)
 
+    print(f"Dimensions: {X_train.ndim}")
+    print(f"Size: {X_train.size}")
+    print(f"Length: {len(X_train)}")
+    print(f"Shape: {X_train.shape}")
+
     # compila a rede
     optimizer = keras.optimizers.Adam(learning_rate=0.0001)
     model.compile(optimizer=optimizer,
@@ -186,7 +114,7 @@ if __name__ == '__main__':
     test_error, test_accuracy = model.evaluate(X_test, y_test, verbose=1)
 
     print("A taxa de precisão no teste é de: {:.2f}%".format(test_accuracy))
-    print("O taxa de erro no teste é de: {:.2f}%".format(test_error))
+    print("A taxa de erro no teste é de: {:.2f}%".format(test_error))
 
     # salva o modelo da rede treinada em um arquivo
     model.save("cnn_genre_classifier.h5")

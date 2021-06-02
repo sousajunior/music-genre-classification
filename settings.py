@@ -10,7 +10,7 @@ TEST_MUSICS_DIRECTORY = "test"
 SAMPLE_RATE = 22050
 
 # nome do arquivo que contém os dados (features) das músicas
-TRAIN_DATASET_PATH = "extracted_data_with_10_segments_and_30_sec.json"
+TRAIN_DATASET_PATH = "extracted_data_with_15_segments_and_30_sec.json"
 
 # número a ser usado no "train_test_split" para manter o mesmo shuffle para todas as chamadas
 RANDOM_STATE = 4
