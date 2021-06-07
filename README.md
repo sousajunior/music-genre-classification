@@ -8,7 +8,7 @@
 2. Download the GTZAN dataset from http://marsyas.info/downloads/datasets.html
 3. Put the GTZAN "genres" folder inside the root of current project
 4. Run the file "create_datasets.py" that creates the datasets with music features (MFCCs)
-5. Put some songs that you want to predict the gender inside the "songs" folder
+5. Put some songs that you want to predict the genre inside the "songs" folder
 6. Run the file `predict_genre.py` and enjoy !
 
 **To customize the network models:**
