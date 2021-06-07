@@ -22,13 +22,16 @@ def prepare_datasets(test_size=None, validation_size=None):
 
     # separa os dados em treinamento, teste e validação
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, stratify=y ,random_state=RANDOM_STATE)
+        X, y, test_size=test_size, stratify=y, random_state=RANDOM_STATE)
     X_train, X_validation, y_train, y_validation = train_test_split(
         X_train, y_train, test_size=validation_size, stratify=y_train, random_state=RANDOM_STATE)
 
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 # rnn_genre_classifier.h5 - acc: 0.77%, erro: 0.80%
+# rnn_genre_classifier.h5 - acc: 0.69%, erro: 1.41% -> batch_size: 32
+# rnn_genre_classifier.h5 - acc: 0.67%, erro: 1.18% -> batch_size: 128
+# rnn_genre_classifier.h5 - acc: 0.76%, erro: 1.40% -> batch_size: 128 com duas camadas de 128
 def build_model(input_shape):
     """Gera um modelo de rede RNN-LSTM
     :param input_shape (tuple): Dados de entrada da rede
@@ -40,10 +43,12 @@ def build_model(input_shape):
 
     # 1ª camada LSTM
     model.add(keras.layers.LSTM(
-        64, input_shape=input_shape, return_sequences=True))
+        128, input_shape=input_shape, return_sequences=True))
 
     # 2ª camada LSTM
-    model.add(keras.layers.LSTM(64))
+    model.add(keras.layers.LSTM(128))
+    model.add(keras.layers.Dropout(0.3))
+
 
     # camada densa + dropout pra evitar o overfitting
     model.add(keras.layers.Dense(64, activation='relu'))

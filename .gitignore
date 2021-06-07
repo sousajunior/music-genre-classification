@@ -1,8 +1,4 @@
 /genres/*
 *.json
-*.mp3
-*.m4a
-*.webm
 *.cache
 *__pycache__
-!Classic Rock Sample Music.webm

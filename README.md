@@ -13,4 +13,4 @@
 
 **To customize the network models:**
 
-The trained network models are the ".h5" files, and if you want to change some model, it is only necessary to change the correspondent `classifier.py` file and run it. After run it, it will save your new network model and after that you can enjoy your custom model running the `predict_genre.py`.
+The trained network models are the ".h5" files, and if you want to change some model, it is only necessary to change the correspondent `classifier.py` file and run it (e.g., `cnn_genre_classifier.py`). After run it, it will save your new network model generating a new ".h5" and after that you can enjoy your custom model running the `predict_genre.py`.

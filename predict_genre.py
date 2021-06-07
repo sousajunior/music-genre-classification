@@ -1,4 +1,5 @@
 import os
+from settings import NUMBER_OF_MFCCS, NUMBER_OF_SEGMENTS, TRACK_DURATION
 from consolemenu.console_menu import clear_terminal
 import numpy as np
 from song_features_extractor import extract_mfcc_from_one_song
@@ -28,7 +29,13 @@ def predict_genre(music_file_path, network_type='mlp'):
     # limpa os warnings que aparecem relacionados a GPU
     clear_terminal()
 
-    X = extract_mfcc_from_one_song(music_file_path)
+    X = extract_mfcc_from_one_song(
+        music_file_path,
+        num_mfcc=NUMBER_OF_MFCCS,
+        num_segments=NUMBER_OF_SEGMENTS,
+        track_duration=TRACK_DURATION
+    )
+
 
     # não adiciona a terceira dimensão no array quando a rede é do tipo RNN
     if network_type != 'rnn': X = X[..., np.newaxis]

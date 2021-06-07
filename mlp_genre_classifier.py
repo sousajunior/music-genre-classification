@@ -88,7 +88,7 @@ if __name__ == '__main__':
         y_train,
         validation_data=(X_validation, y_validation),
         epochs=150,
-        batch_size=32  # (16 - 128)
+        batch_size=128 # (16 - 128)
     )
 
     # imprime um gráfico com o histórico do desempenho da rede
