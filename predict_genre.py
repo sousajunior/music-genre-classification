@@ -50,7 +50,7 @@ def predict_genre(music_file_path, network_type='mlp'):
     # preenche um dictionary com o tamanho do ranking
     for index in range(ranking_size):
         # preenche o dictionary com a % de precisão na chave "accuracy"
-        predicted_genres_ranking[index]['accuracy'] = prediction[0][ranking[index]]
+        predicted_genres_ranking[index]['accuracy'] = prediction[0][ranking[index]] * 100
         # preenche o dictionary com o nome do gênero na chave "label"
         predicted_genres_ranking[index]['label'] = genres[ranking[index]]
 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
         # cria os itens do menu de resultados obtidos pela previsão
         for predicted_genre in predicted_genres:
-            result_menu.append_item(MenuItem("Gênero: {}, Precisão: {:.2f}%".format(
+            result_menu.append_item(MenuItem("Gênero: {}, Acurácia: {:.2f}%".format(
                 predicted_genre['label'], predicted_genre['accuracy'])))
 
         result_menu.show()
